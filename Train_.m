@@ -72,15 +72,5 @@ options = trainingOptions('sgdm',...
 
 % Train the network that consists of the transferred and new layers. 
 netTransfer = trainNetwork(trainingImages,layers,options);
-
-
-% Classify Validation Images
-% Classify the validation images using the fine-tuned network.
-% predictedLabels = classify(netTransfer,validationImages);
-
-
-
-%
-
 changeTestsize_(testloc); %adjust the testing images size.
 resulting_(outloc,testloc,netTransfer);  %write the classification result of the testing data on txt file called RESULT.
