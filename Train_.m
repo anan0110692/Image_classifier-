@@ -1,28 +1,27 @@
 function Train_(trainloc,testloc,outloc)
 adjustsize(trainloc) %adjusting the training images size 
-%% Load Data
+% Load Data
 %
 % automatically labels the images based on folder names and stores the data
 % as an |ImageDatastore| object.
 
 images=imageDatastore(trainloc,'IncludeSubfolders',true,...
     'LabelSource','foldernames');
-%%
 % Divide the data into training and validation data sets. Use 70% of the
 % images for training and 30% for validation. 
 [trainingImages] = splitEachLabel(images,1,'randomized');
-%% Load Pretrained Network
+%Load Pretrained Network
 % Load the pretrained AlexNet neural network. 
 net = alexnet;
 
 
-%% Transfer Layers to New Network
+% Transfer Layers to New Network
 % The last three layers of the pretrained network |net| are configured for
 % 1000 classes. These three layers must be modified for the our
 % classification problem. 
 layersTransfer = net.Layers(1:end-3);
 
-%%
+%
 % Transfer the layers to the new classification task by replacing the last
 % three layers with a fully connected layer, a softmax layer, and a
 % classification output layer. Specify the options of the new fully
@@ -39,7 +38,7 @@ layers = [
     classificationLayer];
 
 
-%% Train Network
+% Train Network
 % Specify the training options. For transfer learning, keep the features
 % from the early layers of the pretrained network (the transferred layer
 % weights). Set |InitialLearnRate| to a small value to slow down learning
@@ -67,24 +66,21 @@ options = trainingOptions('sgdm',...
     'Verbose',false,...
     'Plots','training-progress',...
     'ValidationFrequency',numIterationsPerEpoch);
-%     'ValidationData',validationImages,...
 
 
-%%
+
+
 % Train the network that consists of the transferred and new layers. 
 netTransfer = trainNetwork(trainingImages,layers,options);
 
 
-%% Classify Validation Images
+% Classify Validation Images
 % Classify the validation images using the fine-tuned network.
 % predictedLabels = classify(netTransfer,validationImages);
 
 
 
-%%
-% Calculate the classification accuracy on the validation set. Accuracy is
-% the fraction of labels that the network predicts correctly.
-% valLabels = validationImages.Labels;
-% accuracy = mean(predictedLabels == valLabels);
-changeTestsize_(testloc);
-resulting_(outloc,testloc,netTransfer);
+%
+
+changeTestsize_(testloc); %adjust the testing images size.
+resulting_(outloc,testloc,netTransfer);  %write the classification result of the testing data on txt file called RESULT.
