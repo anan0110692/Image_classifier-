@@ -23,3 +23,6 @@ This code is able to implement an image classifier using the concept of the tran
    
    - Outloc: is folder location of the output txt file.Ex:'C:\Users\anan\Desktop\outFolder'.
    
+   ## References :
+   https://uk.mathworks.com/help/nnet/examples/transfer-learning-using-alexnet.html
+   
